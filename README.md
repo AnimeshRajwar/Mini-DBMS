@@ -63,27 +63,28 @@ Mini-DBMS/
 ## 🖥️ GUI Overview
 
 The GUI (`DBMSGUI.java`) provides:
-- 🧾 **Command input area** and **output console**
-- 🧭 **Menu bar** with Database and Table operations
-- 💬 **Status bar** showing the active database
-- ⌨️ **Hotkeys**:
+
+- 🧾 **Command input area** and **output console**  
+- 🧭 **Menu bar** with Database and Table operations  
+- 💬 **Status bar** showing the active database  
+- ⌨️ **Hotkeys**:  
   - `Ctrl + Enter` — Execute command  
   - `Ctrl + ↑` / `Ctrl + ↓` — Navigate command history  
-- 🪟 Input dialogs for quick database/table creation
+- 🪟 Input dialogs for quick database/table creation  
 
-> If your desktop environment hides the menu bar, resize or switch focus to reveal it.
+> 💡 If your desktop environment hides the menu bar, resize or switch focus to reveal it.
 
 ---
 
 ## ⚙️ Storage Model & Transaction Logic
 
-- Tables stored under `data/<database>/<table>.txt`
-- First line = column headers, following lines = rows (comma-separated)
+- Tables stored under `data/<database>/<table>.txt`  
+- First line = column headers, following lines = rows (comma-separated)  
 - Write operations (INSERT, UPDATE, DELETE):
-  1. Acquire global write lock
-  2. Write updates to `.tmp` file
-  3. Log commit entry to `commit.log`
-  4. Replace original file atomically
+  1. Acquire global write lock  
+  2. Write updates to `.tmp` file  
+  3. Log commit entry to `commit.log`  
+  4. Replace original file atomically  
 
 **Recovery:** On startup, unfinished `.tmp` files are removed automatically.
 
@@ -120,19 +121,21 @@ SHOW DATABASES;
 
 ## 🧰 Implementation Notes
 
-* `Database.java` handles:
+### `Database.java`
 
-  * File operations
-  * Temporary file commits
-  * Recovery on startup
-  * Concurrency control with a `ReentrantLock`
-* `CommandParser.java` handles:
+* Handles file operations
+* Manages temporary file commits
+* Performs recovery on startup
+* Uses a `ReentrantLock` for concurrency control
 
-  * Regex-based SQL-like parsing
-  * Command dispatch to Database
-* `DBMSGUI.java`:
+### `CommandParser.java`
 
-  * Integrates parser + database
-  * Displays output in Swing text area
+* Performs regex-based SQL-like parsing
+* Dispatches commands to the Database
+
+### `DBMSGUI.java`
+
+* Integrates parser + database
+* Displays output in Swing text area
 
 
