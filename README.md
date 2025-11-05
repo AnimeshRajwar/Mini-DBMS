@@ -5,7 +5,8 @@ It supports basic **SQL-like commands**, **CRUD operations**, and a **Swing GUI*
 Designed as a **learning project** to understand how databases work internally.
 
 ---
-
+![Mini DBMS Preview](preview.png)
+---
 ## 🚀 Features
 
 - File-based data storage using plain text files  
