@@ -1,7 +1,3 @@
-Here’s a **clean, professional README.md** ready for GitHub — formatted in Markdown, with badges, sections, and syntax highlighting 👇
-
----
-
 ```markdown
 # 🗄️ Mini DBMS (Java)
 
