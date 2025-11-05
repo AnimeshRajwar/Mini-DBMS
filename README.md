@@ -25,7 +25,7 @@ Mini-DBMS/
 ├── commit.log               # Log of commits for recovery
 └── README.md
 
-````
+```
 
 ---
 
@@ -63,28 +63,27 @@ Mini-DBMS/
 ## 🖥️ GUI Overview
 
 The GUI (`DBMSGUI.java`) provides:
-
-- 🧾 **Command input area** and **output console**  
-- 🧭 **Menu bar** with Database and Table operations  
-- 💬 **Status bar** showing the active database  
-- ⌨️ **Hotkeys**:  
+- 🧾 **Command input area** and **output console**
+- 🧭 **Menu bar** with Database and Table operations
+- 💬 **Status bar** showing the active database
+- ⌨️ **Hotkeys**:
   - `Ctrl + Enter` — Execute command  
   - `Ctrl + ↑` / `Ctrl + ↓` — Navigate command history  
-- 🪟 Input dialogs for quick database/table creation  
+- 🪟 Input dialogs for quick database/table creation
 
-> 💡 If your desktop environment hides the menu bar, resize or switch focus to reveal it.
+> If your desktop environment hides the menu bar, resize or switch focus to reveal it.
 
 ---
 
 ## ⚙️ Storage Model & Transaction Logic
 
-- Tables stored under `data/<database>/<table>.txt`  
-- First line = column headers, following lines = rows (comma-separated)  
+- Tables stored under `data/<database>/<table>.txt`
+- First line = column headers, following lines = rows (comma-separated)
 - Write operations (INSERT, UPDATE, DELETE):
-  1. Acquire global write lock  
-  2. Write updates to `.tmp` file  
-  3. Log commit entry to `commit.log`  
-  4. Replace original file atomically  
+  1. Acquire global write lock
+  2. Write updates to `.tmp` file
+  3. Log commit entry to `commit.log`
+  4. Replace original file atomically
 
 **Recovery:** On startup, unfinished `.tmp` files are removed automatically.
 
@@ -100,7 +99,7 @@ javac -d out src/*.java
 
 # Launch GUI
 java -cp out DBMSGUI
-````
+```
 
 Then in the GUI:
 
@@ -121,21 +120,39 @@ SHOW DATABASES;
 
 ## 🧰 Implementation Notes
 
-### `Database.java`
+* `Database.java` handles:
 
-* Handles file operations
-* Manages temporary file commits
-* Performs recovery on startup
-* Uses a `ReentrantLock` for concurrency control
+  * File operations
+  * Temporary file commits
+  * Recovery on startup
+  * Concurrency control with a `ReentrantLock`
+* `CommandParser.java` handles:
 
-### `CommandParser.java`
+  * Regex-based SQL-like parsing
+  * Command dispatch to Database
+* `DBMSGUI.java`:
 
-* Performs regex-based SQL-like parsing
-* Dispatches commands to the Database
+  * Integrates parser + database
+  * Displays output in Swing text area
 
-### `DBMSGUI.java`
+  ```
+  SHOW TABLES;
+  SHOW DATABASES;
+  ```
 
-* Integrates parser + database
-* Displays output in Swing text area
+  ## Troubleshooting & common errors
 
+  - "No database selected." — call `USE <db>` first.
+  - "Table not found" — confirm table exists in `data/<db>/` and has `.txt` extension.
+  - "Value count mismatch with columns" when inserting — make sure number of values equals number of columns in header.
+  - Column not found in WHERE/UPDATE — verify exact column name as used in the header (case-insensitive search is used, but whitespace matters).
+  - If files appear corrupted or operations fail mid-way, check for leftover `.tmp` files under `data/<db>/` and remove them; restart the app (it also auto-cleans `.tmp` files on start).
+
+
+  ## Where to look in source
+
+  - Command parsing and high-level commands: `src/CommandParser.java`.
+  - File operations, transactions, locking: `src/Database.java`.
+  - GUI: `src/DBMSGUI.java`.
+  - Utility per-table operations (alternate API & examples): `src/Table.java`.
 
