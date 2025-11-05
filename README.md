@@ -71,4 +71,4 @@ SHOW TABLES;
 * No indexing or transaction rollback beyond basic safety.
 * Ideal for students and beginners exploring DBMS internals.
 
-```
+
