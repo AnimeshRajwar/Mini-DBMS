@@ -1,4 +1,3 @@
-````markdown
 # 🗄️ Mini DBMS (Java)
 
 A simple **file-based Database Management System** built entirely in **Java**.  
